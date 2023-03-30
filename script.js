@@ -1,5 +1,5 @@
 "use strict"
-const scoreValue = document.querySelector(".header_score")
+// const scoreValue = document.querySelector(".header_score")
 const score = document.querySelector(".question")
 const highScore = document.querySelector(".span_score")
 const inputValue = document.querySelector(".header_input")
@@ -17,10 +17,14 @@ btnCheck.addEventListener("click", function (event) {
     event.preventDefault()
     const valueInput = Number(inputValue.value)
 
+    const displayScore = function (scoreValue) {
+        document.querySelector(".header_score").textContent = scoreValue;
+    }
+
     if (!valueInput) {
         document.querySelector(".header_score").textContent = "No number!"
     } else if (valueInput === secretNumber) {
-        scoreValue.textContent = "Correct number!"
+        displayScore("Correct number!")
         header.style.backgroundColor = "violet"
         inputValue.style.backgroundColor = "violet"
         score.style.color = "violet"
@@ -34,7 +38,17 @@ btnCheck.addEventListener("click", function (event) {
             highScoreTotal.textContent = high_score
         }
 
-    } else if (valueInput > secretNumber) {
+    } else if (valueInput !== secretNumber) {
+        if (valueScore > 1) {
+            displayScore(valueInput > secretNumber ? "Too high!" : "Too low!")
+            valueScore--;
+            highScore.textContent = valueScore;
+        } else {
+            displayScore("You lose the game!")
+            highScore.textContent = 0
+        }
+    }
+    {/* else if (valueInput > secretNumber) {
         if (valueScore > 1) {
             scoreValue.textContent = "Too high!"
             valueScore--;
@@ -52,14 +66,13 @@ btnCheck.addEventListener("click", function (event) {
             scoreValue.textContent = "You lose the game!"
             highScore.textContent = 0
         }
-    }
+    } */}
 })
 
-again.addEventListener("click", function (event) {
-    // event.preventDefault()
+again.addEventListener("click", function () {
     valueScore = 20;
     secretNumber = Math.trunc(Math.random() * 20) + 1
-    scoreValue.textContent = "Start guessing..."
+    document.querySelector(".header_score").textContent = "Start guessing..."
     highScore.textContent = valueScore
     score.textContent = "?"
     inputValue.value = ""
